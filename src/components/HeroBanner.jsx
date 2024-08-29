@@ -1,29 +1,94 @@
 import React from "react";
+import {
+  VerticalTimeline,
+  VerticalTimelineElement,
+} from "react-vertical-timeline-component";
 import { motion } from "framer-motion";
 
-const HeroBanner = ({ title, subtitle, description, backgroundImage }) => {
+import "react-vertical-timeline-component/style.min.css";
+
+import { styles } from "../styles";
+import { experiences } from "../constants";
+import { SectionWrapper } from "../hoc";
+import { textVariant } from "../utils/motion";
+
+const ExperienceCard = ({ experience }) => {
   return (
-    <div
-      className="relative w-full h-[400px] flex justify-center items-center"
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+    <VerticalTimelineElement
+      contentStyle={{
+        background: "linear-gradient(135deg, #2e2b3a, #3b3754)",
+        color: "#e0e0e0",
+        borderRadius: "12px",
+        boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
       }}
+      contentArrowStyle={{ borderRight: "7px solid  #3b3754" }}
+      date={experience.date}
+      dateClassName="text-gray-400 font-semibold"
+      iconStyle={{
+        background: experience.iconBg,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: "50%",
+        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.15)",
+      }}
+      icon={
+        <div className='flex justify-center items-center w-full h-full'>
+          <img
+            src={experience.icon}
+            alt={experience.company_name}
+            className='w-[70%] h-[70%] object-contain'
+          />
+        </div>
+      }
     >
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-      <motion.div
-        className="relative z-10 text-center text-white"
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-      >
-        <h1 className="text-4xl font-bold">{title}</h1>
-        <p className="mt-4 text-lg">{subtitle}</p>
-        {description && <p className="mt-2 text-md max-w-2xl mx-auto">{description}</p>}
-      </motion.div>
-    </div>
+      <div>
+        <h3 className='text-white text-[22px] font-bold leading-tight'>
+          {experience.title}
+        </h3>
+        <p className='text-indigo-300 text-[16px] font-medium mb-3'>
+          {experience.company_name}
+        </p>
+      </div>
+
+      <ul className='mt-4 list-disc ml-5 space-y-2'>
+        {experience.points.map((point, index) => (
+          <li
+            key={`experience-point-${index}`}
+            className='text-gray-300 text-[14px] pl-1 tracking-wide leading-relaxed'
+          >
+            {point}
+          </li>
+        ))}
+      </ul>
+    </VerticalTimelineElement>
   );
 };
 
-export default HeroBanner;
+const Experience = () => {
+  return (
+    <>
+      <motion.div variants={textVariant()}>
+        <p className={`${styles.sectionSubText} text-center text-gray-400`}>
+          My Journey So Far
+        </p>
+        <h2 className={`${styles.sectionHeadText} text-center text-white`}>
+          Work Experience
+        </h2>
+      </motion.div>
+
+      <div className='mt-16 flex flex-col'>
+        <VerticalTimeline>
+          {experiences.map((experience, index) => (
+            <ExperienceCard
+              key={`experience-${index}`}
+              experience={experience}
+            />
+          ))}
+        </VerticalTimeline>
+      </div>
+    </>
+  );
+};
+
+export default SectionWrapper(Experience, "work");
