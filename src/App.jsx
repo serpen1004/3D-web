@@ -1,27 +1,29 @@
-import { BrowserRouter } from "react-router-dom";
+import React from "react";
+import HeroBanner from "./HeroBanner";
+import Header from "./Header";
+import ProjectList from "./ProjectList";
+import SectionWrapper from "./SectionWrapper";
 
-import { About, Contact, Experience, Feedbacks, Hero, Navbar, Tech, Works, StarsCanvas } from "./components";
+const links = [
+  { text: "Home", href: "#home" },
+  { text: "Projects", href: "#projects" },
+  { text: "Contact", href: "#contact" },
+];
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <div className='relative z-0 bg-primary'>
-        <div className='bg-hero-pattern bg-cover bg-no-repeat bg-center'>
-          <Navbar />
-          <Hero />
-        </div>
-        <About />
-        <Experience />
-        <Tech />
-        <Works />
-        <Feedbacks />
-        <div className='relative z-0'>
-          <Contact />
-          <StarsCanvas />
-        </div>
-      </div>
-    </BrowserRouter>
+    <div>
+      <Header links={links} />
+      <HeroBanner
+        title="Welcome to My Portfolio"
+        subtitle="Showcasing My Projects and Skills"
+        backgroundImage="path/to/background.jpg"
+      />
+      <SectionWrapper idName="projects">
+        <ProjectList />
+      </SectionWrapper>
+    </div>
   );
-}
+};
 
 export default App;
